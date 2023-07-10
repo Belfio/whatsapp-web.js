@@ -1,36 +1,35 @@
 /**
  * ==== wwebjs-shell ====
  * Used for quickly testing library features
- * 
+ *
  * Running `npm run shell` will start WhatsApp Web with headless=false
- * and then drop you into Node REPL with `client` in its context. 
+ * and then drop you into Node REPL with `client` in its context.
  */
+const repl = require("repl")
 
-const repl = require('repl');
-
-const { Client, LocalAuth } = require('./index');
+const { Client, LocalAuth } = require("./index")
 
 const client = new Client({
-    puppeteer: { headless: false }, 
-    authStrategy: new LocalAuth()
-});
+    puppeteer: { headless: false },
+    authStrategy: new LocalAuth(),
+})
 
-console.log('Initializing...');
+console.log("Initializing...")
 
-client.initialize();
+client.initialize()
 
-client.on('qr', () => {
-    console.log('Please scan the QR code on the browser.');
-});
+client.on("qr", (QR) => {
+    console.log("Please scan the QR code on the browser.", QR)
+})
 
-client.on('authenticated', (session) => {
-    console.log(JSON.stringify(session));
-});
+client.on("authenticated", (session) => {
+    console.log("authenticated", session)
+})
 
-client.on('ready', () => {
-    const shell = repl.start('wwebjs> ');
-    shell.context.client = client;
-    shell.on('exit', async () => {
-        await client.destroy();
-    });
-});
+client.on("ready", () => {
+    const shell = repl.start("wwebjs> ")
+    shell.context.client = client
+    shell.on("exit", async () => {
+        await client.destroy()
+    })
+})
