@@ -8,9 +8,19 @@
 // Login
 // The user will login by scanning the QR code provided by Mr Whatsapp
 
+import { Client, LocalAuth } from "./index"
+import { Nodebox } from "@codesandbox/nodebox"
 import repl from "repl"
 const DEV = true
-import { Client, LocalAuth } from "./index"
+
+const runtime = new Nodebox({
+    // Provide a reference to the <iframe> element in the DOM
+    // where Nodebox should render the preview.
+    iframe: document.getElementById("nodebox-iframe"),
+})
+
+// Establish a connection with the runtime environment.
+await runtime.connect()
 
 const client = new Client({
     puppeteer: { headless: true },
